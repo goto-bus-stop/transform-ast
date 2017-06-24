@@ -11,15 +11,16 @@ npm install --save transform-ast
 
 ## API
 
-### `magicString = astTransform(source, opts = {}, fn)`
+### `magicString = transformAst(source, opts = {}, fn)`
 
 Parse and transform a `source` string.
 `fn` will be called on each node.
 The returned `magicString` is a [magic-string][] instance, with a `toString()` method to get the transformed string and a `generateMap()` method to generate a source map.
 
-### `node.source()`
+### `node.getSource()`
 
 Get the source string for a node, including transformations.
+`node.source()` also works, except with `ImportDeclaration`s which have a string `.source` property.
 
 ### `node.update(string)`
 

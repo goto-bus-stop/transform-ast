@@ -30,9 +30,10 @@ module.exports = function astTransform (source, options, cb) {
 
   function walk (node, parent) {
     node.parent = parent
-    node.source = function () {
+    node.getSource = function () {
       return string.slice(node.start, node.end)
     }
+    if (!node.source) node.source = node.getSource
     node.update = Object.assign(function (replacement) {
       string.overwrite(node.start, node.end, replacement)
     }, node.update || {})
