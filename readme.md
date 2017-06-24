@@ -1,4 +1,4 @@
-# ast-transform
+# transform-ast
 
 Transform an AST with source maps.
 Basically @substack's [falafel](https://github.com/substack/node-falafel), but based on [magic-string][].
@@ -6,7 +6,7 @@ Basically @substack's [falafel](https://github.com/substack/node-falafel), but b
 ## Install
 
 ```bash
-npm install --save ast-transform
+npm install --save transform-ast
 ```
 
 ## API

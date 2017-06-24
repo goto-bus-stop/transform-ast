@@ -1,5 +1,5 @@
 {
-  "name": "ast-transform",
+  "name": "transform-ast",
   "version": "0.0.0",
   "description": "transform an AST with source maps",
   "main": "index.js",
@@ -23,10 +23,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goto-bus-stop/ast-transform.git"
+    "url": "git+https://github.com/goto-bus-stop/transform-ast.git"
   },
   "bugs": {
-    "url": "https://github.com/goto-bus-stop/ast-transform/issues"
+    "url": "https://github.com/goto-bus-stop/transform-ast/issues"
   },
-  "homepage": "https://github.com/goto-bus-stop/ast-transform#readme"
+  "homepage": "https://github.com/goto-bus-stop/transform-ast#readme"
 }
