@@ -1,7 +1,7 @@
 {
   "name": "ast-transform",
   "version": "0.0.0",
-  "description": "",
+  "description": "transform an AST with source maps",
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js test/falafel/*.js"
@@ -17,5 +17,16 @@
   "devDependencies": {
     "acorn-jsx": "^4.0.1",
     "tape": "^4.6.3"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goto-bus-stop/ast-transform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/goto-bus-stop/ast-transform/issues"
+  },
+  "homepage": "https://github.com/goto-bus-stop/ast-transform#readme"
 }
