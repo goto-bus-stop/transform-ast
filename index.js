@@ -33,7 +33,7 @@ module.exports = function astTransform (source, options, cb) {
     node.getSource = function () {
       return string.slice(node.start, node.end)
     }
-    if (!node.source) node.source = node.getSource
+    node.source = Object.assign(node.getSource, node.source || {})
     node.update = Object.assign(function (replacement) {
       string.overwrite(node.start, node.end, replacement)
       return node
