@@ -20,12 +20,13 @@ var result = require('transform-ast')(`
     node.update(`function (${params.join(', ')}) ${node.body.getSource()}`)
   }
 })
-result === `
+result.toString() === `
   var multiply = function (a, b) {
     return a * b
   }
   var add = function (a, b) { return a + b }
 `
+fs.writeFile('output.js.map', result.generateMap().toString())
 ```
 
 ## Install
