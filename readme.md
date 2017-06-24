@@ -3,6 +3,31 @@
 Transform an AST with source maps.
 Basically @substack's [falafel](https://github.com/substack/node-falafel), but based on [magic-string][].
 
+## Example
+
+```js
+var result = require('transform-ast')(`
+  var multiply = (a, b) => {
+    return a * b
+  }
+  var add = (a, b) => a + b
+`, function (node) {
+  if (node.type === 'ArrowFunctionExpression') {
+    var params = node.params.map(function (param) { return param.getSource() })
+    if (node.body.type !== 'BlockStatement') {
+      node.body.update(`{ return ${node.body.getSource()} }`)
+    }
+    node.update(`function (${params.join(', ')}) ${node.body.getSource()}`)
+  }
+})
+result === `
+  var multiply = function (a, b) {
+    return a * b
+  }
+  var add = function (a, b) { return a + b }
+`
+```
+
 ## Install
 
 ```bash
