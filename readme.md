@@ -52,6 +52,14 @@ Get the source string for a node, including transformations.
 
 Replace `node` with the given string.
 
+### `node.append(string)`
+
+Append the source `string` after this node.
+
+### `node.prepend(string)`
+
+Prepend the source `string` before this node.
+
 ## License
 
 [MIT](./LICENSE)

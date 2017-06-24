@@ -36,7 +36,16 @@ module.exports = function astTransform (source, options, cb) {
     if (!node.source) node.source = node.getSource
     node.update = Object.assign(function (replacement) {
       string.overwrite(node.start, node.end, replacement)
+      return node
     }, node.update || {})
+    node.append = function (append) {
+      string.appendLeft(node.end, append)
+      return node
+    }
+    node.prepend = function (prepend) {
+      string.prependRight(node.start, prepend)
+      return node
+    }
 
     Object.keys(node).forEach(function (key) {
       if (key === 'parent') return null
