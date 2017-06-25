@@ -29,23 +29,29 @@ module.exports = function astTransform (source, options, cb) {
   return string
 
   function walk (node, parent) {
+    var edit = {
+      source: function () {
+        return string.slice(node.start, node.end)
+      },
+      update: function (replacement) {
+        string.overwrite(node.start, node.end, replacement)
+        return edit
+      },
+      append: function (append) {
+        string.appendLeft(node.end, append)
+        return node
+      },
+      prepend: function (prepend) {
+        string.prependRight(node.start, prepend)
+        return node
+      }
+    }
     node.parent = parent
-    node.getSource = function () {
-      return string.slice(node.start, node.end)
-    }
-    node.source = assign(node.getSource, node.source || {})
-    node.update = assign(function (replacement) {
-      string.overwrite(node.start, node.end, replacement)
-      return node
-    }, node.update || {})
-    node.append = function (append) {
-      string.appendLeft(node.end, append)
-      return node
-    }
-    node.prepend = function (prepend) {
-      string.prependRight(node.start, prepend)
-      return node
-    }
+    node.edit = edit
+    node.getSource = edit.source
+    Object.keys(edit).forEach(function (k) {
+      if (!(k in node)) node[k] = edit[k]
+    })
 
     Object.keys(node).forEach(function (key) {
       if (key === 'parent') return null

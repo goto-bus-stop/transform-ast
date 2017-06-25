@@ -43,19 +43,26 @@ Parse and transform a `source` string.
 `fn` will be called on each node.
 The returned `magicString` is a [magic-string][] instance, with a `toString()` method to get the transformed string and a `generateMap()` method to generate a source map.
 
-### `node.getSource()`, `node.source()`
+### nodes
+
+In addition to the usual AST node properties, each node object also has some additional methods.
+Unlike falafel, these methods live on the `.edit` property, to prevent name conflicts (such as the `update()` method and the `.update` property of a ForStatement).
+They're still also defined on the `node`s themselves, but only if there is no naming conflict.
+It's better to use the `.edit` property.
+
+### `node.getSource()`, `node.edit.source()`
 
 Get the source string for a node, including transformations.
 
-### `node.update(string)`
+### `node.edit.update(string)`
 
 Replace `node` with the given string.
 
-### `node.append(string)`
+### `node.edit.append(string)`
 
 Append the source `string` after this node.
 
-### `node.prepend(string)`
+### `node.edit.prepend(string)`
 
 Prepend the source `string` before this node.
 

@@ -11,7 +11,7 @@ test('getSource()', function (t) {
 
   transform(source, { sourceType: 'module' }, function (node) {
     if (node.type === 'ImportDeclaration') {
-      t.is(node.source(), "import something from 'somewhere'")
+      t.is(node.getSource(), "import something from 'somewhere'")
       t.is(node.source.value, 'somewhere')
     }
   })
@@ -20,7 +20,7 @@ test('getSource()', function (t) {
 })
 
 test('keys that are both functions and objects', function (t) {
-  t.plan(1)
+  t.plan(3)
 
   var source = `
     for (;; xyz) {} // update.name === "xyz"
@@ -28,7 +28,14 @@ test('keys that are both functions and objects', function (t) {
   `
 
   t.doesNotThrow(function () {
-    transform(source, function (node) {})
+    transform(source, function (node) {
+      if (node.type === 'ForStatement' && node.update.type === 'Identifier') {
+        t.is(node.update.name, 'xyz')
+      }
+      if (node.type === 'ForStatement' && node.update.type === 'CallExpression') {
+        t.is(node.update.arguments.length, 2)
+      }
+    })
   })
 
   t.end()
