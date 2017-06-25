@@ -33,8 +33,8 @@ module.exports = function astTransform (source, options, cb) {
     node.getSource = function () {
       return string.slice(node.start, node.end)
     }
-    node.source = Object.assign(node.getSource, node.source || {})
-    node.update = Object.assign(function (replacement) {
+    node.source = assign(node.getSource, node.source || {})
+    node.update = assign(function (replacement) {
       string.overwrite(node.start, node.end, replacement)
       return node
     }, node.update || {})
@@ -63,4 +63,11 @@ module.exports = function astTransform (source, options, cb) {
 
     cb(node)
   }
+}
+
+function assign (fn, obj) {
+  Object.keys(obj).forEach(function (k) {
+    fn[k] = obj[k]
+  })
+  return fn
 }

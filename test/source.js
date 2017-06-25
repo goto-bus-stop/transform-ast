@@ -18,3 +18,18 @@ test('getSource()', function (t) {
 
   t.end()
 })
+
+test('keys that are both functions and objects', function (t) {
+  t.plan(1)
+
+  var source = `
+    for (;; xyz) {} // update.name === "xyz"
+    for (;; xyz(1, 2)) {} // update.arguments === [1, 2]
+  `
+
+  t.doesNotThrow(function () {
+    transform(source, function (node) {})
+  })
+
+  t.end()
+})
