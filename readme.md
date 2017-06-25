@@ -59,6 +59,55 @@ Append the source `string` after this node.
 
 Prepend the source `string` before this node.
 
+## Custom Parser
+
+You can pass in a custom parser using the `parser` option.
+The parser should be an object with a `parse` function that takes a string and returns an AST.
+Each AST node should have `.start` and `.end` properties indicating their position in the source string.
+
+For example, parsing JSX using [babylon](https://github.com/babel/babylon):
+
+```js
+var babylon = require('babylon')
+var transform = require('transform-ast')
+var assert = require('assert')
+
+assert.equal(transform(`
+  var el = <div />;
+`, { parser: babylon, plugins: [ 'jsx' ] }, function (node) {
+  if (node.type === 'JSXElement') {
+    node.update(JSON.stringify(node.source()))
+  }
+}).toString(), `
+  var el = "<div />";
+`)
+```
+
+But parsers for other languages too, like [tacoscript](https://tacoscript.github.io)'s parser module [horchata](https://github.com/forivall/tacoscript/tree/master/packages/horchata):
+
+```js
+var horchata = require('horchata')
+var transform = require('transform-ast')
+var assert = require('assert')
+
+assert.equal(transform(`
+X = () -> {
+  @prop or= 'value'
+}
+new X
+`, { parser: horchata }, function (node) {
+  switch (node.type) {
+  case 'FunctionExpression':
+    node.update('function () ' + node.body.getSource())
+  }
+}).toString(), `
+X = function () {
+  @prop or= 'value'
+}
+new X
+`)
+```
+
 ## License
 
 [MIT](./LICENSE)
