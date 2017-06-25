@@ -9,9 +9,9 @@ var add = (a, b) => a + b
   if (node.type === 'ArrowFunctionExpression') {
     var params = node.params.map(function (param) { return param.getSource() })
     if (node.body.type !== 'BlockStatement') {
-      node.body.update(`{ return ${node.body.getSource()} }`)
+      node.body.edit.update(`{ return ${node.body.getSource()} }`)
     }
-    node.update(`function (${params.join(', ')}) ${node.body.getSource()}`)
+    node.edit.update(`function (${params.join(', ')}) ${node.body.getSource()}`)
   }
 })
 

@@ -15,9 +15,9 @@ var result = require('transform-ast')(`
   if (node.type === 'ArrowFunctionExpression') {
     var params = node.params.map(function (param) { return param.getSource() })
     if (node.body.type !== 'BlockStatement') {
-      node.body.update(`{ return ${node.body.getSource()} }`)
+      node.body.edit.update(`{ return ${node.body.getSource()} }`)
     }
-    node.update(`function (${params.join(', ')}) ${node.body.getSource()}`)
+    node.edit.update(`function (${params.join(', ')}) ${node.body.getSource()}`)
   }
 })
 result.toString() === `
@@ -83,7 +83,7 @@ assert.equal(transform(`
   var el = <div />;
 `, { parser: babylon, plugins: [ 'jsx' ] }, function (node) {
   if (node.type === 'JSXElement') {
-    node.update(JSON.stringify(node.source()))
+    node.edit.update(JSON.stringify(node.source()))
   }
 }).toString(), `
   var el = "<div />";
@@ -105,7 +105,7 @@ new X
 `, { parser: horchata }, function (node) {
   switch (node.type) {
   case 'FunctionExpression':
-    node.update('function () ' + node.body.getSource())
+    node.edit.update('function () ' + node.body.getSource())
   }
 }).toString(), `
 X = function () {

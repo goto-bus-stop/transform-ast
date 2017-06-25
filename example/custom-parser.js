@@ -7,7 +7,7 @@ assert.equal(transform(`
   var el = <div />;
 `, { parser: babylon, plugins: [ 'jsx' ] }, function (node) {
   if (node.type === 'JSXElement') {
-    node.update(JSON.stringify(node.source()))
+    node.edit.update(JSON.stringify(node.getSource()))
   }
 }).toString(), `
   var el = "<div />";
@@ -21,7 +21,7 @@ new X
 `, { parser: horchata }, function (node) {
   switch (node.type) {
   case 'FunctionExpression':
-    node.update('function () ' + node.body.getSource())
+    node.edit.update('function () ' + node.body.getSource())
   }
 }).toString(), `
 X = function () {
