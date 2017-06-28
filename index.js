@@ -70,10 +70,3 @@ module.exports = function astTransform (source, options, cb) {
     cb(node)
   }
 }
-
-function assign (fn, obj) {
-  Object.keys(obj).forEach(function (k) {
-    fn[k] = obj[k]
-  })
-  return fn
-}
