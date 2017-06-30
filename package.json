@@ -1,6 +1,6 @@
 {
   "name": "transform-ast",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "transform an AST with source maps",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "acorn-jsx": "^4.0.1",
-    "tape": "^4.6.3"
+    "tape": "^4.7.0"
   },
   "directories": {
     "test": "test"
