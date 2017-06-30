@@ -10,6 +10,7 @@ module.exports = function astTransform (source, options, cb) {
   if (typeof source === 'object' && !isBuffer(source)) {
     options = source
   }
+  if (!options) options = {}
   if (options.source) {
     source = options.source
     delete options.source
@@ -23,12 +24,37 @@ module.exports = function astTransform (source, options, cb) {
   var string = new MagicString(source, options)
   var ast = parse(source + '', options)
 
-  walk(ast, null)
+  walk(ast, null, cb || function () {})
 
   string.inspect = string.toString
+  string.walk = function (cb) {
+    walk(ast, null, cb)
+  }
   return string
 
-  function walk (node, parent) {
+  function walk (node, parent, cb) {
+    node.parent = parent
+    if (!node.edit) {
+      addHelpers(node)
+    }
+
+    Object.keys(node).forEach(function (key) {
+      if (key === 'parent') return null
+      if (Array.isArray(node[key])) {
+        node[key].forEach(function (child) {
+          if (child && typeof child.type === 'string') {
+            walk(child, node, cb)
+          }
+        })
+      }
+      if (node[key] && typeof node[key].type === 'string') {
+        walk(node[key], node, cb)
+      }
+    })
+
+    cb(node)
+  }
+  function addHelpers (node) {
     var edit = {
       source: function () {
         return string.slice(node.start, node.end)
@@ -46,27 +72,10 @@ module.exports = function astTransform (source, options, cb) {
         return node
       }
     }
-    node.parent = parent
     node.edit = edit
     node.getSource = edit.source
     Object.keys(edit).forEach(function (k) {
       if (!(k in node)) node[k] = edit[k]
     })
-
-    Object.keys(node).forEach(function (key) {
-      if (key === 'parent') return null
-      if (Array.isArray(node[key])) {
-        node[key].forEach(function (child) {
-          if (child && typeof child.type === 'string') {
-            walk(child, node)
-          }
-        })
-      }
-      if (node[key] && typeof node[key].type === 'string') {
-        walk(node[key], node)
-      }
-    })
-
-    cb(node)
   }
 }
