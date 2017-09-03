@@ -38,19 +38,21 @@ module.exports = function astTransform (source, options, cb) {
       addHelpers(node)
     }
 
-    Object.keys(node).forEach(function (key) {
-      if (key === 'parent') return null
+    var keys = Object.keys(node)
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i]
+      if (key === 'parent') continue
       if (Array.isArray(node[key])) {
-        node[key].forEach(function (child) {
+        for (var j = 0; j < node[key].length; j++) {
+          var child = node[key][j]
           if (child && typeof child.type === 'string') {
             walk(child, node, cb)
           }
-        })
-      }
-      if (node[key] && typeof node[key].type === 'string') {
+        }
+      } else if (node[key] && typeof node[key].type === 'string') {
         walk(node[key], node, cb)
       }
-    })
+    }
 
     cb(node)
   }
@@ -74,8 +76,10 @@ module.exports = function astTransform (source, options, cb) {
     }
     node.edit = edit
     node.getSource = edit.source
-    Object.keys(edit).forEach(function (k) {
+    var keys = Object.keys(edit)
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i]
       if (!(k in node)) node[k] = edit[k]
-    })
+    }
   }
 }
