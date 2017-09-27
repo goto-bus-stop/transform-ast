@@ -1,6 +1,8 @@
 var acorn = require('acorn')
 var isBuffer = require('is-buffer')
 var MagicString = require('magic-string')
+var convertSourceMap = require('convert-source-map')
+var mergeSourceMap = require('merge-source-map')
 
 module.exports = function astTransform (source, options, cb) {
   if (typeof options === 'function') {
@@ -30,7 +32,29 @@ module.exports = function astTransform (source, options, cb) {
   string.walk = function (cb) {
     walk(ast, null, cb)
   }
+
+  Object.defineProperty(string, 'map', {
+    get: getSourceMap
+  })
+
   return string
+
+  function getSourceMap () {
+    var inputMap = convertSourceMap.fromSource(string.original)
+    if (inputMap) inputMap = inputMap.toObject()
+
+    var magicMap = string.generateMap({
+      hires: !!inputMap,
+      source: options.inputFilename || 'input.js',
+      includeContent: true
+    })
+    
+    if (inputMap) {
+      return mergeSourceMap(inputMap, magicMap)
+    }
+
+    return magicMap
+  }
 
   function walk (node, parent, cb) {
     node.parent = parent
