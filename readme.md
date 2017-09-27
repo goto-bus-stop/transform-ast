@@ -26,7 +26,7 @@ result.toString() === `
   }
   var add = function (a, b) { return a + b }
 `
-fs.writeFile('output.js.map', result.generateMap().toString())
+fs.writeFile('output.js.map', JSON.stringify(result.map))
 ```
 
 ## Install
@@ -41,12 +41,18 @@ npm install --save transform-ast
 
 Parse and transform a `source` string.
 `fn` will be called on each node.
-The returned `magicString` is a [magic-string][] instance, with a `toString()` method to get the transformed string and a `generateMap()` method to generate a source map.
+The returned `magicString` is a [magic-string][] instance, with a `toString()` method to get the transformed string and a `.map` property to access the source map.
 
 ### `magicString.walk(fn)`
 
 Walk the AST again.
 `fn` will be called on each node.
+
+### `magicString.map`
+
+Generate and return a source map.
+If the input `source` had an inline source map comment, this will be taken into account, and the final source map will point back to the original string.
+The source map for _only_ the changes made by transform-ast can be accessed by using [magic-string][]'s `generateMap()` method.
 
 ### nodes
 

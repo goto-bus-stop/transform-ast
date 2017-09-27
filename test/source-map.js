@@ -16,8 +16,8 @@ test('update()', function (t) {
     a += 20
   `)
   t.is(
-    JSON.stringify(result.generateMap({ hires: true })),
-    '{"version":3,"file":null,"sources":[null],"sourcesContent":[null],"names":[],"mappings":"AAAA;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAC;AACb,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,EAAE;AACX,CAAC"}'
+    JSON.stringify(result.map),
+    '{"version":3,"file":null,"sources":["input.js"],"sourcesContent":["\\n    var a = 0\\n    a += 10\\n  "],"names":[],"mappings":"AAAA;YACY,EAAC;SACJ,EAAE;"}'
   )
   t.end()
 })
@@ -35,8 +35,12 @@ test('append/prepend()', function (t) {
     var a = beep('hello').boop
   `)
   t.is(
-    JSON.stringify(result.generateMap({ hires: true })),
-    '{"version":3,"file":null,"sources":[null],"sourcesContent":[null],"names":[],"mappings":"AAAA;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,MAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,OAAC;AACnB,CAAC"}'
+    JSON.stringify(result.map),
+    '{"version":3,"file":null,"sources":["input.js"],"sourcesContent":["\\n    var a = \'hello\'\\n  "],"names":[],"mappings":"AAAA;iBACY,aAAO;"}'
   )
+  t.end()
+})
+
+test('input sourcemap', function (t) {
   t.end()
 })
