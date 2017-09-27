@@ -23,8 +23,10 @@ module.exports = function astTransform (source, options, cb) {
 
   var parse = (options.parser || acorn).parse
 
+  var inputMap = convertSourceMap.fromSource(source)
+  source = convertSourceMap.removeComments(source)
   var string = new MagicString(source, options)
-  var ast = parse(source + '', options)
+  var ast = parse(source, options)
 
   walk(ast, null, cb || function () {})
 
@@ -40,7 +42,6 @@ module.exports = function astTransform (source, options, cb) {
   return string
 
   function getSourceMap () {
-    var inputMap = convertSourceMap.fromSource(string.original)
     if (inputMap) inputMap = inputMap.toObject()
 
     var magicMap = string.generateMap({
