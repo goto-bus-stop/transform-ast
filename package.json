@@ -1,6 +1,6 @@
 {
   "name": "transform-ast",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "transform an AST with source maps",
   "main": "index.js",
   "scripts": {
