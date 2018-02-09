@@ -26,7 +26,7 @@ module.exports = function astTransform (source, options, cb) {
   var inputMap = convertSourceMap.fromSource(source)
   source = convertSourceMap.removeComments(source)
   var string = new MagicString(source, options)
-  var ast = parse(source, options)
+  var ast = options.ast ? options.ast : parse(source, options)
 
   walk(ast, null, cb || function () {})
 
