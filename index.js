@@ -1,4 +1,4 @@
-var acorn = require('acorn')
+var acorn = require('acorn-node')
 var isBuffer = require('is-buffer')
 var MagicString = require('magic-string')
 var convertSourceMap = require('convert-source-map')

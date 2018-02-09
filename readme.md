@@ -43,7 +43,7 @@ Parse and transform a `source` string.
 `fn` will be called on each node.
 The returned `magicString` is a [magic-string][] instance, with a `toString()` method to get the transformed string and a `.map` property to access the source map.
 
-`opts.parser` sets the parser module to use. This should be an object with a `.parse(src, opts)` function. The default is `require('acorn')`.
+`opts.parser` sets the parser module to use. This should be an object with a `.parse(src, opts)` function. The default is [`require('acorn-node')`](https://github.com/browserify/acorn-node).
 
 If you already have an AST, pass it in `opts.ast`. This will skip the parse step inside `transformAst()`.
 
