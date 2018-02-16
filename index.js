@@ -30,7 +30,15 @@ module.exports = function astTransform (source, options, cb) {
 
   walk(ast, null, cb || function () {})
 
-  string.inspect = string.toString
+  var toString = string.toString.bind(string)
+  string.toString = function (opts) {
+    var src = toString()
+    if (opts && opts.map) {
+      src += '\n' + convertSourceMap.fromObject(getSourceMap()).toComment() + '\n'
+    }
+    return src
+  }
+  string.inspect = toString
   string.walk = function (cb) {
     walk(ast, null, cb)
   }
