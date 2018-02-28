@@ -28,7 +28,11 @@ module.exports = function astTransform (source, options, cb) {
   var string = new MagicString(source, options)
   var ast = options.ast ? options.ast : parse(source, options)
 
-  walk(ast, null, cb || function () {})
+  walk(ast, null, function (node) {
+    string.addSourcemapLocation(node.start)
+    string.addSourcemapLocation(node.end)
+    if (cb) cb(node)
+  })
 
   var toString = string.toString.bind(string)
   string.toString = function (opts) {
@@ -53,11 +57,10 @@ module.exports = function astTransform (source, options, cb) {
     if (inputMap) inputMap = inputMap.toObject()
 
     var magicMap = string.generateMap({
-      hires: !!inputMap,
       source: options.inputFilename || 'input.js',
       includeContent: true
     })
-    
+
     if (inputMap) {
       return mergeSourceMap(inputMap, magicMap)
     }
