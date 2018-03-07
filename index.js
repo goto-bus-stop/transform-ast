@@ -78,15 +78,15 @@ module.exports = function astTransform (source, options, cb) {
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i]
       if (key === 'parent') continue
-      if (Array.isArray(node[key])) {
+      if (node[key] && typeof node[key].type === 'string') {
+        walk(node[key], node, cb)
+      } else if (Array.isArray(node[key])) {
         for (var j = 0; j < node[key].length; j++) {
           var child = node[key][j]
           if (child && typeof child.type === 'string') {
             walk(child, node, cb)
           }
         }
-      } else if (node[key] && typeof node[key].type === 'string') {
-        walk(node[key], node, cb)
       }
     }
 
