@@ -70,52 +70,59 @@ module.exports = function astTransform (source, options, cb) {
 
   function walk (node, parent, cb) {
     node.parent = parent
-    if (!node.edit) {
+    if (node.edit === undefined) {
       addHelpers(node)
     }
 
     var keys = Object.keys(node)
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i]
-      if (key === 'parent') continue
+      if (key === 'parent' || key === 'edit') continue
       if (node[key] && typeof node[key].type === 'string') {
         walk(node[key], node, cb)
       } else if (Array.isArray(node[key])) {
-        for (var j = 0; j < node[key].length; j++) {
-          var child = node[key][j]
-          if (child && typeof child.type === 'string') {
-            walk(child, node, cb)
-          }
-        }
+        walkArray(node[key], node, cb)
       }
     }
 
     cb(node)
   }
-  function addHelpers (node) {
-    var edit = {
-      source: function () {
-        return string.slice(node.start, node.end)
-      },
-      update: function (replacement) {
-        string.overwrite(node.start, node.end, replacement)
-        return edit
-      },
-      append: function (append) {
-        string.appendLeft(node.end, append)
-        return node
-      },
-      prepend: function (prepend) {
-        string.prependRight(node.start, prepend)
-        return node
+  function walkArray(array, parent, cb) {
+    for (var i = 0; i < array.length; i++) {
+      var child = array[i]
+      if (child && typeof child.type === 'string') {
+        walk(child, parent, cb)
       }
     }
-    node.edit = edit
-    node.getSource = edit.source
-    var keys = Object.keys(edit)
-    for (var i = 0; i < keys.length; i++) {
-      var k = keys[i]
-      if (!(k in node)) node[k] = edit[k]
-    }
   }
+
+  function addHelpers (node) {
+    var edit = new Helpers(node, string)
+    node.edit = edit
+    node.getSource = edit.source.bind(edit)
+    if (node.update === undefined) node.update = edit.update.bind(edit)
+    if (node.source === undefined) node.source = edit.source.bind(edit)
+    if (node.append === undefined) node.append = edit.append.bind(edit)
+    if (node.prepend === undefined) node.prepend = edit.prepend.bind(edit)
+  }
+}
+
+function Helpers (node, string) {
+  this.node = node
+  this.string = string
+}
+Helpers.prototype.source = function () {
+  return this.string.slice(this.node.start, this.node.end)
+}
+Helpers.prototype.update = function (replacement) {
+  this.string.overwrite(this.node.start, this.node.end, replacement)
+  return this
+}
+Helpers.prototype.append = function (append) {
+  this.string.appendLeft(this.node.end, append)
+  return this
+}
+Helpers.prototype.prepend = function (prepend) {
+  this.string.prependRight(this.node.start, prepend)
+  return this
 }
