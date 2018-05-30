@@ -1,3 +1,4 @@
+var dash = require('dash-ast')
 var acorn = require('acorn-node')
 var isBuffer = require('is-buffer')
 var MagicString = require('magic-string')
@@ -28,10 +29,17 @@ module.exports = function astTransform (source, options, cb) {
   var string = new MagicString(source, options)
   var ast = options.ast ? options.ast : parse(source, options)
 
-  walk(ast, null, function (node) {
-    string.addSourcemapLocation(node.start)
-    string.addSourcemapLocation(node.end)
-    if (cb) cb(node)
+  dash(ast, {
+    enter: function (node, parent) {
+      string.addSourcemapLocation(node.start)
+      string.addSourcemapLocation(node.end)
+
+      node.parent = parent
+      if (node.edit === undefined) {
+        addHelpers(node)
+      }
+    },
+    leave: cb
   })
 
   var toString = string.toString.bind(string)
@@ -44,7 +52,15 @@ module.exports = function astTransform (source, options, cb) {
   }
   string.inspect = toString
   string.walk = function (cb) {
-    walk(ast, null, cb)
+    dash(ast, {
+      enter: function (node, parent) {
+        node.parent = parent
+        if (node.edit === undefined) {
+          addHelpers(node)
+        }
+      },
+      leave: cb
+    })
   }
 
   Object.defineProperty(string, 'map', {
@@ -68,34 +84,6 @@ module.exports = function astTransform (source, options, cb) {
     return magicMap
   }
 
-  function walk (node, parent, cb) {
-    node.parent = parent
-    if (node.edit === undefined) {
-      addHelpers(node)
-    }
-
-    var keys = Object.keys(node)
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i]
-      if (key === 'parent' || key === 'edit') continue
-      if (node[key] && typeof node[key].type === 'string') {
-        walk(node[key], node, cb)
-      } else if (Array.isArray(node[key])) {
-        walkArray(node[key], node, cb)
-      }
-    }
-
-    cb(node)
-  }
-  function walkArray(array, parent, cb) {
-    for (var i = 0; i < array.length; i++) {
-      var child = array[i]
-      if (child && typeof child.type === 'string') {
-        walk(child, parent, cb)
-      }
-    }
-  }
-
   function addHelpers (node) {
     var edit = new Helpers(node, string)
     node.edit = edit
@@ -111,18 +99,19 @@ function Helpers (node, string) {
   this.node = node
   this.string = string
 }
-Helpers.prototype.source = function () {
+Helpers.prototype.source = function source () {
   return this.string.slice(this.node.start, this.node.end)
 }
-Helpers.prototype.update = function (replacement) {
+Helpers.prototype.update = function update (replacement) {
   this.string.overwrite(this.node.start, this.node.end, replacement)
   return this
 }
-Helpers.prototype.append = function (append) {
+Helpers.prototype.append = function append (append) {
   this.string.appendLeft(this.node.end, append)
   return this
 }
-Helpers.prototype.prepend = function (prepend) {
+Helpers.prototype.prepend = function prepend (prepend) {
   this.string.prependRight(this.node.start, prepend)
   return this
 }
+Helpers.prototype.inspect = function () { return '[Helpers]' }
