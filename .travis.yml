@@ -1,0 +1,20 @@
+language: node_js
+os:
+  - linux
+  - osx
+  - windows
+node_js:
+  - '12'
+  - '11'
+  - '10'
+  - '9'
+  - '8'
+  - '6'
+  - '4'
+  - '0.12'
+  - '0.10'
+  - '0.8'
+before_install:
+  - 'nvm install-latest-npm'
+matrix:
+  fast_finish: true
