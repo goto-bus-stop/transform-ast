@@ -1,14 +1,11 @@
 {
   "name": "transform-ast",
-  "version": "2.4.4",
   "description": "transform an AST with source maps",
-  "main": "index.js",
-  "scripts": {
-    "test": "tape test/*.js test/falafel/*.js"
-  },
-  "keywords": [],
+  "version": "2.4.4",
   "author": "Renée Kooi <renee@kooi.me>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goto-bus-stop/transform-ast/issues"
+  },
   "dependencies": {
     "acorn-node": "^1.7.0",
     "convert-source-map": "^1.6.0",
@@ -25,12 +22,15 @@
   "directories": {
     "test": "test"
   },
+  "homepage": "https://github.com/goto-bus-stop/transform-ast#readme",
+  "keywords": [],
+  "license": "MIT",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/goto-bus-stop/transform-ast.git"
   },
-  "bugs": {
-    "url": "https://github.com/goto-bus-stop/transform-ast/issues"
-  },
-  "homepage": "https://github.com/goto-bus-stop/transform-ast#readme"
+  "scripts": {
+    "test": "tape test/*.js test/falafel/*.js"
+  }
 }
