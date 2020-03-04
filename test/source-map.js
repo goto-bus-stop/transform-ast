@@ -17,7 +17,7 @@ test('update()', function (t) {
   `)
   t.is(
     JSON.stringify(result.map),
-    '{"version":3,"file":null,"sources":["input.js"],"sourcesContent":["\\n    var a = 0\\n    a += 10\\n  "],"names":[],"mappings":"AAAA;IACI,IAAI,CAAC,GAAG,EAAC;IACT,CAAC,IAAI,EAAE;"}'
+    '{"version":3,"file":null,"sources":["input.js"],"sourcesContent":["\\n    var a = 0\\n    a += 10\\n  "],"names":[],"mappings":"AAAA;AACA,IAAI,IAAI,CAAC,GAAG,EAAC;AACb,IAAI,CAAC,IAAI,EAAE;AACX"}'
   )
   t.end()
 })
@@ -36,7 +36,7 @@ test('append/prepend()', function (t) {
   `)
   t.is(
     JSON.stringify(result.map),
-    '{"version":3,"file":null,"sources":["input.js"],"sourcesContent":["\\n    var a = \'hello\'\\n  "],"names":[],"mappings":"AAAA;IACI,IAAI,CAAC,QAAG,aAAO;"}'
+    '{"version":3,"file":null,"sources":["input.js"],"sourcesContent":["\\n    var a = \'hello\'\\n  "],"names":[],"mappings":"AAAA;AACA,IAAI,IAAI,CAAC,QAAG,aAAO;AACnB"}'
   )
   t.end()
 })
