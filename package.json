@@ -16,6 +16,7 @@
     "nanobench": "^2.1.1"
   },
   "devDependencies": {
+    "acorn": "^7.1.1",
     "acorn-jsx": "^4.1.1",
     "tape": "^4.11.0"
   },
