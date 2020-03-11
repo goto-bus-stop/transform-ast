@@ -1,7 +1,7 @@
 var falafel = require('../../');
 var test = require('tape');
 
-test('generators', function (t) {
+test('generators', { skip: !require('has-generators') }, function (t) {
     t.plan(1);
     
     var src = 'console.log((function * () { yield 3 })().next().value)';

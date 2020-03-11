@@ -21,6 +21,7 @@
     "babel-core": "^6.26.3",
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
     "babel-register": "^6.26.0",
+    "has-generators": "^1.0.1",
     "has-template-literals": "^1.0.0",
     "tape": "^4.11.0"
   },
