@@ -9,7 +9,7 @@
   "dependencies": {
     "acorn-node": "^2.0.0",
     "convert-source-map": "^1.6.0",
-    "dash-ast": "^1.0.0",
+    "dash-ast": "^2.0.1",
     "is-buffer": "^2.0.3",
     "magic-string": "^0.25.3",
     "merge-source-map": "1.0.4",
