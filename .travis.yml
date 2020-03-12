@@ -19,5 +19,12 @@ before_install:
 matrix:
   fast_finish: true
   exclude:
+    # hard to get to work
     - os: windows
       node_js: '0.8'
+    # it has a different name on windows 🙄
+    - os: windows
+      node_js: 'stable'
+  include:
+    - os: windows
+      node_js: 'latest'
