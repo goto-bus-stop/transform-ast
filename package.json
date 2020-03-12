@@ -12,7 +12,7 @@
     "dash-ast": "^2.0.1",
     "is-buffer": "^2.0.3",
     "magic-string": "^0.25.3",
-    "merge-source-map": "1.0.4",
+    "merge-source-map": "1.1.0",
     "nanobench": "^2.1.1"
   },
   "devDependencies": {
