@@ -11,7 +11,7 @@
     "convert-source-map": "^1.6.0",
     "dash-ast": "^2.0.1",
     "is-buffer": "^2.0.3",
-    "magic-string": "^0.25.3",
+    "magic-string": "^0.26.7",
     "merge-source-map": "1.0.4",
     "nanobench": "^2.1.1"
   },
